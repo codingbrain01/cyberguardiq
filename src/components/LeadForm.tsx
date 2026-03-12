@@ -56,7 +56,7 @@ export default function LeadForm({ riskScore }: Props) {
                     </p>
                     <div className="bg-green-500/10 border border-green-500/30 rounded-xl p-4 w-full text-left space-y-2 mb-6">
                         <p className="text-green-400 font-bold text-sm">What happens next:</p>
-                        <p className="text-slate-300 text-xs">📞 A security specialist will call you within 24 hours</p>
+                        <p className="text-slate-300 text-xs">📞 A security specialist will call you within 5 minutes</p>
                         <p className="text-slate-300 text-xs">🛡️ We will review your device and account risks</p>
                         <p className="text-slate-300 text-xs">🔒 You will receive a personalized protection plan</p>
                     </div>
