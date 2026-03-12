@@ -42,6 +42,8 @@ export default function LeadForm({ riskScore }: Props) {
         )
 
         setSubmitted(true)
+        // @ts-ignore
+        window.fbq('track', 'Lead')
     }
 
     return (
