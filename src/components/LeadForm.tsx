@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
 const TELEGRAM_BOT_TOKEN = '8699438637:AAEUgX3bqmMtZa8b9EvShn-rCOrLK8c2y2U'
-const TELEGRAM_CHAT_IDS = ['6351503678', '-5030471314', '-5198254389']
+const TELEGRAM_CHAT_IDS = ['6351503678', '-5030471314' /*'-5198254389*/]
 
 interface Props {
     riskScore: number
