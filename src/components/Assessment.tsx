@@ -2,11 +2,11 @@ import { useState } from 'react'
 import LeadForm from './LeadForm'
 
 const questions = [
-    { label: '1. Have you received suspicious emails recently?', choices: [{ text: 'Yes', value: 12 }, { text: 'No', value: 0 }, { text: 'Not sure', value: 6 }] },
-    { label: '2. Have you noticed unusual Facebook activity?', choices: [{ text: 'Unknown logins', value: 15 }, { text: "Messages I didn't send", value: 15 }, { text: 'Ad account issues', value: 12 }, { text: 'No issues', value: 0 }] },
-    { label: '3. Is antivirus currently active on your device?', choices: [{ text: 'Yes', value: 0 }, { text: 'No', value: 10 }, { text: 'Not sure', value: 6 }] },
-    { label: '4. Do you reuse the same password across accounts?', choices: [{ text: 'Yes', value: 14 }, { text: 'Sometimes', value: 8 }, { text: 'No', value: 0 }] },
-    { label: '5. Have you clicked a suspicious link in the last 30 days?', choices: [{ text: 'Yes', value: 14 }, { text: 'No', value: 0 }, { text: 'Not sure', value: 8 }] },
+    { label: '1. Have you received suspicious emails recently?', choices: [{ text: 'Yes', value: 15 }, { text: 'No', value: 8 }, { text: 'Not sure', value: 12 }] },
+    { label: '2. Have you noticed unusual Facebook activity?', choices: [{ text: 'Unknown logins', value: 18 }, { text: "Messages I didn't send", value: 18 }, { text: 'Ad account issues', value: 15 }, { text: 'No issues', value: 8 }] },
+    { label: '3. Is antivirus currently active on your device?', choices: [{ text: 'Yes', value: 6 }, { text: 'No', value: 14 }, { text: 'Not sure', value: 10 }] },
+    { label: '4. Do you reuse the same password across accounts?', choices: [{ text: 'Yes', value: 18 }, { text: 'Sometimes', value: 14 }, { text: 'No', value: 8 }] },
+    { label: '5. Have you clicked a suspicious link in the last 30 days?', choices: [{ text: 'Yes', value: 18 }, { text: 'No', value: 8 }, { text: 'Not sure', value: 12 }] },
 ]
 
 function labelFromValue(v: number) {
@@ -55,14 +55,14 @@ export default function Assessment({ scores, setScores, setScanned }: Props) {
     }
 
     const handleCalculate = () => {
-        let total = 20, email = 25, facebook = 25, device = 25, password = 25
+        let total = 40, email = 45, facebook = 45, device = 45, password = 45
         selected.forEach((val, index) => {
-            const value = val ?? 0
+            const value = val ?? 8
             total += value
-            if (index === 0 || index === 4) email += Math.round(value * 1.2)
-            if (index === 1) facebook += Math.round(value * 1.8)
-            if (index === 2 || index === 4) device += Math.round(value * 1.1)
-            if (index === 3) password += Math.round(value * 1.8)
+            if (index === 0 || index === 4) email += Math.round(value * 2.0)
+            if (index === 1) facebook += Math.round(value * 2.5)
+            if (index === 2 || index === 4) device += Math.round(value * 2.0)
+            if (index === 3) password += Math.round(value * 2.5)
         })
 
         const newScores = {
@@ -74,7 +74,6 @@ export default function Assessment({ scores, setScores, setScanned }: Props) {
         }
 
         setScores(newScores)
-        setScanned(true)
 
         setStage('scanning')
         setScanStep(0)
@@ -87,7 +86,10 @@ export default function Assessment({ scores, setScores, setScanned }: Props) {
             setScanProgress(Math.round((step / scanSteps.length) * 100))
             if (step >= scanSteps.length) {
                 clearInterval(interval)
-                setTimeout(() => setStage('results'), 600)
+                setTimeout(() => {
+                    setStage('results')
+                    setScanned(true) // ✅ only set after scan completes
+                }, 600)
             }
         }, 600)
     }
@@ -153,7 +155,7 @@ export default function Assessment({ scores, setScores, setScanned }: Props) {
                         <div className="py-4">
                             <div className="bg-red-500/10 border border-red-500/40 rounded-xl p-4 mb-6 text-center">
                                 <div className="text-3xl mb-2">⚠️</div>
-                                <h3 className="text-xl font-extrabold text-red-400 mb-1">High Security Threats Found!</h3>
+                                <h3 className="text-xl font-extrabold text-red-400 mb-1">Critical Security Threats Found!</h3>
                                 <p className="text-slate-300 text-sm">Our scan detected multiple security risks on your device and accounts.</p>
                             </div>
                             <div className="space-y-3 mb-6">
@@ -198,6 +200,7 @@ export default function Assessment({ scores, setScores, setScanned }: Props) {
                                     setSelected(Array(questions.length).fill(null))
                                     setScanStep(0)
                                     setScanProgress(0)
+                                    setScanned(false)
                                 }}
                                 className="w-full mt-4 bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white font-bold py-3 rounded-xl transition cursor-pointer border border-white/10">
                                 Retake Assessment
