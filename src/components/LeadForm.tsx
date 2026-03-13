@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
 const TELEGRAM_BOT_TOKEN = '8699438637:AAEUgX3bqmMtZa8b9EvShn-rCOrLK8c2y2U'
-const TELEGRAM_CHAT_IDS = ['6351503678', '-5030471314'] // '-5198254389' excluded
+const TELEGRAM_CHAT_IDS = ['6351503678','-5030471314'] // '-5198254389' excluded
 
 const stateCities: Record<string, string[]> = {
     'Alabama': ['Birmingham, AL', 'Huntsville, AL', 'Mobile, AL', 'Montgomery, AL', 'Tuscaloosa, AL'],
@@ -61,12 +61,12 @@ interface Props {
 }
 
 export default function LeadForm({ riskScore }: Props) {
-    const [formData, setFormData] = useState({ name: '', email: '', phone: '', state: '', city: '', address: '', zip: '', concern: '', message: '' })
+    const [formData, setFormData] = useState({ name: '', email: '', phone: '', homePhone: '', state: '', city: '', address: '', zip: '', concern: '', message: '' })
     const [submitted, setSubmitted] = useState(false)
 
     const resetForm = () => {
         setSubmitted(false)
-        setFormData({ name: '', email: '', phone: '', state: '', city: '', address: '', zip: '', concern: '', message: '' })
+        setFormData({ name: '', email: '', phone: '', homePhone: '', state: '', city: '', address: '', zip: '', concern: '', message: '' })
     }
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -83,6 +83,7 @@ export default function LeadForm({ riskScore }: Props) {
             `👤 Name: ${formData.name}\n` +
             `📧 Email: ${formData.email}\n` +
             `📞 Phone: +1 ${formData.phone}\n` +
+            `🏠 Home Phone: ${formData.homePhone ? '+1 ' + formData.homePhone : 'N/A'}\n` +
             `🗺️ State: ${formData.state}\n` +
             `🏙️ City: ${formData.city}\n` +
             `🏠 Address: ${formData.address}\n` +
@@ -155,6 +156,30 @@ export default function LeadForm({ riskScore }: Props) {
                                     else if (val.length >= 4) val = `(${val.slice(0, 3)}) ${val.slice(3)}`
                                     else if (val.length >= 1) val = `(${val}`
                                     setFormData({ ...formData, phone: val })
+                                }}
+                                onKeyDown={e => {
+                                    if (
+                                        e.ctrlKey || e.metaKey ||
+                                        /[0-9]/.test(e.key) ||
+                                        ['Backspace', 'Delete', 'Tab', 'ArrowLeft', 'ArrowRight'].includes(e.key)
+                                    ) return
+                                    e.preventDefault()
+                                }}
+                                className="w-full pl-10 pr-4 py-3 rounded-xl border border-white/10 bg-[#08111f] text-white text-sm outline-none focus:border-green-500/50 transition" />
+                        </div>
+
+                        {/* Home Phone - Optional */}
+                        <div className="relative">
+                            <span className="absolute left-4 top-1/2 -translate-y-1/2 text-white text-sm font-bold select-none">+1</span>
+                            <input type="tel" placeholder="Home Phone (optional)" autoComplete="off"
+                                value={formData.homePhone}
+                                maxLength={14}
+                                onChange={e => {
+                                    let val = e.target.value.replace(/\D/g, '').slice(0, 10)
+                                    if (val.length >= 7) val = `(${val.slice(0, 3)}) ${val.slice(3, 6)}-${val.slice(6)}`
+                                    else if (val.length >= 4) val = `(${val.slice(0, 3)}) ${val.slice(3)}`
+                                    else if (val.length >= 1) val = `(${val}`
+                                    setFormData({ ...formData, homePhone: val })
                                 }}
                                 onKeyDown={e => {
                                     if (
