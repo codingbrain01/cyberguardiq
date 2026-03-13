@@ -12,16 +12,16 @@ export default function Header() {
         <nav className="hidden md:flex gap-6">
           {[
             ['assessment', 'Risk Questions'],
-            ['lead-form', 'Free Review'],
+            ['lead-form'],
           ].map(([id, label]) => (
             <button key={id} onClick={() => scrollTo(id)}
               className="text-slate-300 hover:text-green-400 font-semibold text-sm transition cursor-pointer bg-transparent border-none">
               {label}
             </button>
           ))}
-          <button onClick={() => scrollTo('lead-form')}
+          <button onClick={() => scrollTo('assessment')}
             className="bg-green-500 hover:bg-green-600 text-[#07111d] font-bold px-4 py-2 rounded-xl text-sm transition cursor-pointer border-none">
-            Start Free Check
+            Start Security Check
           </button>
         </nav>
       </div>

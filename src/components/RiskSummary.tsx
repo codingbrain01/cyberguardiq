@@ -83,7 +83,7 @@ export default function RiskSummary({ scores }: Props) {
           </div>
 
           <p className="text-slate-300 text-sm mb-6">
-            Recommended next step: request a free review and get help securing your email, passwords, device, and social accounts.
+            Recommended next step: request a review and get help securing your email, passwords, device, and social accounts.
           </p>
           <button onClick={() => scrollTo('lead-form')}
             className="bg-green-500 hover:bg-green-600 text-[#07111d] font-bold px-6 py-3 rounded-xl transition cursor-pointer border-none">

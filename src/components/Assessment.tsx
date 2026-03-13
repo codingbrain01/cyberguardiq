@@ -76,7 +76,6 @@ export default function Assessment({ scores, setScores, setScanned }: Props) {
         setScores(newScores)
         setScanned(true)
 
-        // Start scanning
         setStage('scanning')
         setScanStep(0)
         setScanProgress(0)
@@ -193,7 +192,6 @@ export default function Assessment({ scores, setScores, setScanned }: Props) {
                                     </div>
                                 ))}
                             </div>
-                            {/* Retake Button */}
                             <button
                                 onClick={() => {
                                     setStage('quiz')
@@ -218,7 +216,19 @@ export default function Assessment({ scores, setScores, setScanned }: Props) {
                         <LeadForm riskScore={scores.total} />
                     </div>
                 ) : (
-                    <LeadForm riskScore={scores.total} />
+                    <div className="bg-[#0f172a] border border-white/10 rounded-2xl p-6 flex flex-col items-center justify-center text-center min-h-64">
+                        <div className="text-5xl mb-4">🔍</div>
+                        <h3 className="text-xl font-bold mb-3">Complete the Assessment First</h3>
+                        <p className="text-slate-400 text-sm">
+                            Answer the risk questions and scan your device to unlock your free security review form.
+                        </p>
+                        <div className="mt-6 w-full bg-white/5 border border-white/10 rounded-xl p-4 text-left space-y-2">
+                            <p className="text-slate-400 text-xs">✅ Answer all 5 questions</p>
+                            <p className="text-slate-400 text-xs">✅ Click "Scan My Device"</p>
+                            <p className="text-slate-400 text-xs">✅ View your risk results</p>
+                            <p className="text-slate-400 text-xs">🔒 Form unlocks after scan</p>
+                        </div>
+                    </div>
                 )}
 
             </div>

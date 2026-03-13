@@ -21,7 +21,7 @@ export default function Hero() {
             and account compromise with a fast assessment.
           </p>
           <div className="flex flex-wrap gap-3 mb-4">
-            <button onClick={() => scrollTo('lead-form')}
+            <button onClick={() => scrollTo('assessment')}
               className="bg-green-500 hover:bg-green-600 text-[#07111d] font-bold px-6 py-3 rounded-xl transition cursor-pointer border-none">
               Start Security Check
             </button>
@@ -72,7 +72,7 @@ export default function Hero() {
             </div>
           </div>
 
-          <button onClick={() => scrollTo('lead-form')}
+          <button onClick={() => scrollTo('assessment')}
             className="w-full bg-green-500 hover:bg-green-600 text-[#07111d] font-bold py-3 rounded-xl transition cursor-pointer border-none">
             Get My Risk Summary
           </button>
