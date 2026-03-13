@@ -72,6 +72,12 @@ export default function LeadForm({ riskScore }: Props) {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
 
+        const digitsOnly = formData.phone.replace(/\D/g, '')
+        if (digitsOnly.length < 10) {
+            alert('⚠️ Please enter a valid 10-digit US phone number.')
+            return
+        }
+
         const message =
             `🚨 New Security Lead\n\n` +
             `👤 Name: ${formData.name}\n` +
